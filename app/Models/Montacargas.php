@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Montacargas extends Model
 {
@@ -15,11 +16,23 @@ class Montacargas extends Model
     protected $fillable = [
         'codigo',
         'modelo',
+        'capacidad_carga',
+        'capacidad_bateria_necesaria',
         'estado',
+        'bateria_id', // ¡AGREGADO! Necesario para la asignación
     ];
 
     // --- RELACIONES ---
 
+    /**
+     * Relación: Un Montacargas tiene UNA batería asignada actualmente.
+     * La clave foránea 'bateria_id' está en la tabla 'montacargas'.
+     */
+    public function bateria(): BelongsTo
+    {
+        return $this->belongsTo(Bateria::class, 'bateria_id');
+    }
+    
     /**
      * Un Montacargas tiene muchos Registros de Uso.
      */
